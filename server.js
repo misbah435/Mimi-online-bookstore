@@ -9,6 +9,10 @@ app.get("/", (req, res) => {
     res.render("index");
 });
 
+app.get("/books", (req, res) => {
+    res.render("books");
+});
+
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
 });
