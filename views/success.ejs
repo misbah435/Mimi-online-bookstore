@@ -1,0 +1,59 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Successful | MimiBooks</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+    <%- include("partials/header") %>
+
+    <main class="container">
+        <section class="form-container" style="text-align:center;">
+
+            <div style="font-size:65px; margin-bottom:15px;">
+                🎉
+            </div>
+
+            <h1>Order Placed Successfully!</h1>
+
+            <p>Thank you for shopping with MimiBooks.</p>
+
+            <div class="payment-total">
+                <span>Order ID</span>
+                <strong>#<%= orderId %></strong>
+            </div>
+
+            <div class="payment-total">
+                <span>Total Amount</span>
+                <strong>₹<%= Number(total).toFixed(2) %></strong>
+            </div>
+
+            <div class="payment-total">
+                <span>Payment Method</span>
+                <strong><%= paymentMethod %></strong>
+            </div>
+
+            <div class="payment-total">
+                <span>Payment Status</span>
+                <strong><%= paymentStatus %></strong>
+            </div>
+
+            <p>Your demo order has been recorded successfully.</p>
+
+            <a href="/books" class="btn">Continue Shopping</a>
+
+            <br><br>
+
+            <a href="/">Back to Home</a>
+
+        </section>
+    </main>
+
+    <%- include("partials/footer") %>
+
+</body>
+</html>

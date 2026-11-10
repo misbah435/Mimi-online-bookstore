@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart | MimiBooks</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <%- include("partials/header") %>
+    <main class="page-wrap narrow-wrap">
+        <div class="page-heading"><p class="eyebrow">YOUR SELECTION</p><h1>Shopping cart</h1><p>Review your books before checkout.</p></div>
+        <% if (cart.length) { %>
+            <div class="cart-list">
+                <% cart.forEach(item => { %>
+                    <article class="cart-item">
+                        <div class="mini-cover"><%= item.title.charAt(0) %></div>
+                        <div class="cart-item-info"><h3><%= item.title %></h3><p>by <%= item.author %></p><strong>₹<%= Number(item.price).toFixed(2) %></strong></div>
+                        <form action="/cart/update" method="POST" class="quantity-form">
+                            <input type="hidden" name="bookId" value="<%= item.id %>">
+                            <label>Qty <input type="number" name="quantity" min="1" max="10" value="<%= item.quantity %>"></label>
+                            <button class="text-link" type="submit">Update</button>
+                        </form>
+                        <form action="/cart/remove" method="POST"><input type="hidden" name="bookId" value="<%= item.id %>"><button class="remove-btn" type="submit">Remove</button></form>
+                    </article>
+                <% }) %>
+            </div>
+            <div class="cart-summary"><p>Subtotal <strong>₹<%= total.toFixed(2) %></strong></p><p class="total-line">Total <strong>₹<%= total.toFixed(2) %></strong></p><a href="/checkout" class="btn full-btn">Proceed to checkout →</a><a href="/books" class="continue-link">Continue shopping</a></div>
+        <% } else { %>
+            <div class="empty-state"><h2>Your cart is empty</h2><p>Find a book that catches your eye.</p><a href="/books" class="btn">Browse catalogue</a></div>
+        <% } %>
+    </main>
+    <%- include("partials/footer") %>
+</body>
+</html>

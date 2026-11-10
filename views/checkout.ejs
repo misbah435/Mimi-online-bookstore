@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | MimiBooks</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <%- include("partials/header") %>
+    <main class="auth-wrap checkout-wrap">
+        <section class="auth-card checkout-card">
+            <p class="eyebrow">ALMOST YOURS</p>
+            <h1>Delivery details</h1>
+            <p>Enter the details for your demo order.</p>
+            <% if (error) { %><div class="alert"><%= error %></div><% } %>
+            <form action="/checkout" method="POST" class="form-stack">
+                <label>Full name<input type="text" name="customerName" value="<%= details.customerName || (currentUser && currentUser.name) || '' %>" required></label>
+                <label>Email address<input type="email" name="email" value="<%= details.email || (currentUser && currentUser.email) || '' %>" required></label>
+                <label>Phone number<input type="tel" name="phone" value="<%= details.phone || '' %>" required></label>
+                <label>Delivery address<textarea name="address" rows="3" required><%= details.address || '' %></textarea></label>
+                <div class="order-total"><span>Order total</span><strong>₹<%= total.toFixed(2) %></strong></div>
+                <button class="btn full-btn" type="submit">Continue to payment →</button>
+            </form>
+        </section>
+    </main>
+    <%- include("partials/footer") %>
+</body>
+</html>

@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | MimiBooks</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <%- include("partials/header") %>
+    <main class="auth-wrap">
+        <section class="auth-card">
+            <p class="eyebrow">WELCOME BACK</p>
+            <h1>Login to MimiBooks</h1>
+            <p>Sign in to continue your reading journey.</p>
+            <% if (error) { %><div class="alert"><%= error %></div><% } %>
+            <form action="/login" method="POST" class="form-stack">
+                <label>Email address<input type="email" name="email" required></label>
+                <label>Password<input type="password" name="password" required></label>
+                <button class="btn full-btn" type="submit">Login</button>
+            </form>
+            <p class="form-note">New to MimiBooks? <a href="/register">Create an account</a></p>
+        </section>
+    </main>
+    <%- include("partials/footer") %>
+</body>
+</html>

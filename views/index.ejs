@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MimiBooks | Your next favourite book</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <%- include("partials/header") %>
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <p class="eyebrow">WELCOME TO MIMIBOOKS</p>
+                <h1>Find your next<br><em>great read.</em></h1>
+                <p class="hero-description">Explore stories, discover new ideas and find books that stay with you long after the last page.</p>
+                <a href="/books" class="btn">Explore the catalogue <span>→</span></a>
+            </div>
+            <div class="hero-art">
+                <div class="hero-book book-one">THE<br>ART OF<br>READING</div>
+                <div class="hero-book book-two">STORIES<br>TO KEEP</div>
+                <div class="hero-circle">READ<br>MORE.</div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-heading">
+                <div><p class="eyebrow">HANDPICKED FOR YOU</p><h2>Featured books</h2></div>
+                <a href="/books" class="text-link">View all books →</a>
+            </div>
+
+            <div class="book-grid">
+                <% books.forEach(book => { %>
+                    <article class="book-card">
+                        <div class="book-cover"><span><%= book.category || "BOOK" %></span><strong><%= book.title %></strong><small><%= book.author %></small></div>
+                        <div class="book-info">
+                            <p class="category"><%= book.category %></p>
+                            <h3><%= book.title %></h3>
+                            <p class="author">by <%= book.author %></p>
+                            <p class="description"><%= book.description %></p>
+                            <div class="book-bottom">
+                                <strong>₹<%= Number(book.price).toFixed(2) %></strong>
+                                <form action="/cart/add" method="POST">
+                                    <input type="hidden" name="bookId" value="<%= book.id %>">
+                                    <button class="small-btn" type="submit">Add to cart +</button>
+                                </form>
+                            </div>
+                        </div>
+                    </article>
+                <% }) %>
+            </div>
+        </section>
+
+        <section class="about-strip">
+            <p class="eyebrow">A NOTE FROM MIMIBOOKS</p>
+            <h2>Every book opens a new door.</h2>
+            <p>Browse our catalogue, add your favourites to the cart and place a demo order in a few simple steps.</p>
+            <a href="/books" class="btn btn-light">Start exploring</a>
+        </section>
+    </main>
+    <%- include("partials/footer") %>
+</body>
+</html>

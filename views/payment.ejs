@@ -1,0 +1,69 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment | MimiBooks</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+    <%- include("partials/header") %>
+
+    <main class="container">
+        <section class="form-container">
+
+            <h1>Choose Payment Method</h1>
+            <p>Select how you would like to complete your sample order.</p>
+
+            <div class="payment-total">
+                <span>Amount to pay</span>
+                <strong>₹<%= Number(total).toFixed(2) %></strong>
+            </div>
+
+            <form action="/payment" method="POST" class="form-stack">
+
+                <label class="payment-option">
+                    <input type="radio" name="payment_method" value="UPI" required>
+                    <span>
+                        <strong>UPI</strong>
+                        <small>Demo UPI payment</small>
+                    </span>
+                </label>
+
+                <label class="payment-option">
+                    <input type="radio" name="payment_method" value="Card" required>
+                    <span>
+                        <strong>Credit / Debit Card</strong>
+                        <small>Demo card payment</small>
+                    </span>
+                </label>
+
+                <label class="payment-option">
+                    <input type="radio" name="payment_method" value="Cash on Delivery" required>
+                    <span>
+                        <strong>Cash on Delivery</strong>
+                        <small>Pay when your order arrives</small>
+                    </span>
+                </label>
+
+                <button type="submit" class="btn">
+                    Confirm Order
+                </button>
+
+            </form>
+
+            <p class="payment-note">
+                This is a demo payment system. No real payment will be processed.
+            </p>
+
+            <a href="/cart">Back to Cart</a>
+
+        </section>
+    </main>
+
+    <%- include("partials/footer") %>
+
+</body>
+</html>

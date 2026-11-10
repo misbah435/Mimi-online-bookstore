@@ -1,32 +1,247 @@
+﻿
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Books - Mimi Online Bookstore</title>
+    <title>Catalogue | MimiBooks</title>
+    <link rel="stylesheet" href="/css/style.css">
+
+    <style>
+        .catalogue-filters {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 25px 0;
+        }
+
+        .filter-btn {
+            padding: 10px 18px;
+            border: 1px solid #e9b5c9;
+            border-radius: 25px;
+            background: #fff4f8;
+            color: #923d62;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: #b94e7c;
+            color: white;
+        }
+
+        .book-card {
+            overflow: hidden;
+        }
+
+        .book-cover {
+            height: 245px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            background: #fff0f5;
+            overflow: hidden;
+        }
+
+        .book-cover img {
+            height: 100%;
+            width: auto;
+            max-width: 85%;
+            object-fit: contain;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(70, 20, 40, .18);
+        }
+
+        .book-cover .cover-fallback {
+            display: none;
+            text-align: center;
+            color: #923d62;
+            font-weight: bold;
+        }
+
+        .book-card[hidden] {
+            display: none;
+        }
+
+        .book-info {
+            padding: 18px;
+        }
+
+        .book-info h3 {
+            margin: 8px 0;
+        }
+
+        .description {
+            min-height: 55px;
+        }
+
+        @media (max-width: 600px) {
+            .book-cover {
+                height: 200px;
+            }
+        }
+    </style>
 </head>
 
 <body>
+    <%- include("partials/header") %>
 
-    <h1>Our Books 📚</h1>
+    <main class="page-wrap">
 
-    <p>Explore our collection of books.</p>
+        <div class="page-heading">
+            <p class="eyebrow">THE MIMIBOOKS COLLECTION</p>
+            <h1>Find Your Next Favourite Book ♡</h1>
+            <p>Stories, knowledge and inspiration — all in one place.</p>
+        </div>
 
-    <div>
-        <h2>The Alchemist</h2>
-        <p>Author: Paulo Coelho</p>
-        <p>Price: ₹399</p>
-    </div>
+        <form action="/books" method="GET" class="search-form">
+            <input
+                type="search"
+                name="search"
+                value="<%= search %>"
+                placeholder="Search by title, author or category..."
+            >
+            <button class="btn" type="submit">Search</button>
 
-    <div>
-        <h2>Atomic Habits</h2>
-        <p>Author: James Clear</p>
-        <p>Price: ₹499</p>
-    </div>
+            <% if (search) { %>
+                <a href="/books" class="clear-link">Clear</a>
+            <% } %>
+        </form>
 
-    <br>
+        <div class="catalogue-filters">
+            <button type="button" class="filter-btn active" data-category="all">All Books</button>
+            <button type="button" class="filter-btn" data-category="fiction">Fiction</button>
+            <button type="button" class="filter-btn" data-category="self-help">Self-help</button>
+            <button type="button" class="filter-btn" data-category="finance">Finance</button>
+            <button type="button" class="filter-btn" data-category="fantasy">Fantasy</button>
+            <button type="button" class="filter-btn" data-category="history">History</button>
+            <button type="button" class="filter-btn" data-category="biography">Biography</button>
+        </div>
 
-    <a href="/">← Back to Home</a>
+        <p style="text-align:center;color:#923d62;margin-bottom:20px">
+            Discover your next read from our collection.
+        </p>
+
+        <% if (books.length) { %>
+
+            <div class="book-grid">
+
+                <% books.forEach(book => { %>
+
+                    <article class="book-card"
+                        data-book-category="<%= (book.category || '').toLowerCase() %>">
+
+                        <div class="book-cover">
+
+                            <% if (book.image) { %>
+                                <img
+                                    src="<%= book.image %>"
+                                    alt="Cover of <%= book.title %>"
+                                    loading="lazy"
+                                    onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                                >
+                            <% } %>
+
+                            <div class="cover-fallback">
+                                <span><%= book.category || "MIMIBOOKS" %></span>
+                                <p><%= book.title %></p>
+                                <small><%= book.author %></small>
+                            </div>
+
+                        </div>
+
+                        <div class="book-info">
+
+                            <p class="category"><%= book.category || "Books" %></p>
+
+                            <h3><%= book.title %></h3>
+
+                            <p class="author">by <%= book.author %></p>
+
+                            <p class="description">
+                                <%= book.description || "Discover this book and add it to your reading list." %>
+                            </p>
+
+                            <div class="book-bottom">
+
+                                <strong>
+                                    ₹<%= Number(book.price).toFixed(2) %>
+                                </strong>
+
+                                <form action="/cart/add" method="POST">
+                                    <input
+                                        type="hidden"
+                                        name="bookId"
+                                        value="<%= book.id %>"
+                                    >
+                                    <button class="small-btn" type="submit">
+                                        Add to cart +
+                                    </button>
+                                </form>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                <% }) %>
+
+            </div>
+
+            <p id="noCategoryBooks" style="display:none;text-align:center;margin:30px">
+                No books in this category yet.
+            </p>
+
+        <% } else { %>
+
+            <div class="empty-state">
+                <h2>No books found</h2>
+                <p>Try another title, author or category.</p>
+                <a href="/books" class="btn">View all books</a>
+            </div>
+
+        <% } %>
+
+    </main>
+
+    <%- include("partials/footer") %>
+
+    <script>
+        const filterButtons = document.querySelectorAll(".filter-btn");
+        const bookCards = document.querySelectorAll(".book-card");
+        const noBooks = document.getElementById("noCategoryBooks");
+
+        filterButtons.forEach(button => {
+            button.addEventListener("click", () => {
+
+                filterButtons.forEach(btn => btn.classList.remove("active"));
+                button.classList.add("active");
+
+                const selected = button.dataset.category;
+                let visible = 0;
+
+                bookCards.forEach(card => {
+                    const category = card.dataset.bookCategory;
+
+                    const matches =
+                        selected === "all" ||
+                        category.includes(selected);
+
+                    card.hidden = !matches;
+
+                    if (matches) visible++;
+                });
+
+                if (noBooks) {
+                    noBooks.style.display = visible === 0 ? "block" : "none";
+                }
+            });
+        });
+    </script>
 
 </body>
 </html>
